@@ -1,3 +1,4 @@
+export { authApi }      from './auth'
 export { usersApi }     from './users'
 export { bodyTypesApi } from './bodyTypes'
 export { stylesApi }    from './styles'
