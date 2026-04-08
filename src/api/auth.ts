@@ -1,9 +1,13 @@
 import { api } from './client'
-import type { LoginRequest } from '../types/auth'
+import { token } from '../lib/token'
+import type { LoginRequest, AuthResponse } from '../types/auth'
 import type { User } from '../types/user'
 
 export const authApi = {
-  login:  (credentials: LoginRequest) => api.post<void>('/auth/login', credentials),
+  login:  (credentials: LoginRequest) => api.post<AuthResponse>('/auth/login', credentials),
   logout: ()                          => api.post<void>('/auth/logout', {}),
-  me:     ()                          => api.get<User>('/auth/me'),
+  me:     ()                          => {
+    const id = token.getUserId()
+    return api.get<User>(`/users/${id}`)
+  },
 }

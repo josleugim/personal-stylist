@@ -4,7 +4,8 @@ export interface LoginRequest {
 }
 
 export interface AuthResponse {
-  access_token: string
+  access_token:  string
   refresh_token: string
-  token_type: string
+  token_type:    string
+  user_id:       number
 }

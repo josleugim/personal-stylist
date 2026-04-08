@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { authApi } from '../api/auth'
+import { token } from '../lib/token'
 import type { User } from '../types/user'
 import type { LoginRequest } from '../types/auth'
 
@@ -25,14 +26,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   async function login(credentials: LoginRequest) {
-    await authApi.login(credentials)
+    const { access_token, refresh_token, user_id } = await authApi.login(credentials)
+    token.save(access_token, refresh_token, user_id)
     const me = await authApi.me()
     setUser(me)
   }
 
   async function logout() {
-    await authApi.logout()
-    setUser(null)
+    try {
+      await authApi.logout()
+    } finally {
+      token.clear()
+      setUser(null)
+    }
   }
 
   return (
