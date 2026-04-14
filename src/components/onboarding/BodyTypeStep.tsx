@@ -35,6 +35,13 @@ export function BodyTypeStep({ selected, onSelect }: Props) {
               : 'border-border bg-card hover:bg-muted/50'
           }`}
         >
+          {bt.thumbnail_url && (
+            <img
+              src={bt.thumbnail_url}
+              alt={bt.name}
+              className="w-full h-32 object-cover rounded-lg mb-3"
+            />
+          )}
           <p className="text-sm font-medium text-foreground">{bt.name}</p>
           <p className="text-xs text-muted-foreground mt-0.5">{bt.description}</p>
         </button>
