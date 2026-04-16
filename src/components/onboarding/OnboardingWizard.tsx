@@ -27,6 +27,8 @@ const DEFAULT_PREFERENCES: Preferences = {
   fitNotes:       '',
   hobbies:        [],
   sports:         [],
+  age:            null,
+  height:         null,
 }
 
 export function OnboardingWizard({ onComplete }: Props) {
@@ -40,10 +42,11 @@ export function OnboardingWizard({ onComplete }: Props) {
   const progress   = ((step + 1) / STEPS.length) * 100
   const isLastStep = step === STEPS.length - 1
 
+  const { budget, location, age, height } = selection.preferences
   const canContinue =
     step === 0 ? selection.styleIds.length > 0
     : step === 1 ? selection.bodyTypeId !== null
-    : selection.preferences.budget !== null
+    : budget !== null && location.trim() !== '' && age !== null && height !== null
 
   function handleNext() {
     if (isLastStep) {

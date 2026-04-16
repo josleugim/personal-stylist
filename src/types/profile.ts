@@ -27,6 +27,8 @@ export interface Profile {
 
 export interface ProfileCreate {
   user_id: number
+  style_ids?: number[]
+  body_type_ids?: number[]
   fit_notes?: string
   favorite_colors?: string[]
   colors_to_avoid?: string[]

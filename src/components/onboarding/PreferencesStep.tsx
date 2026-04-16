@@ -160,7 +160,22 @@ function MultiSelectDropdown({
   )
 }
 
+type RequiredField = 'budget' | 'location' | 'age' | 'height'
+
 export function PreferencesStep({ value, onChange }: Props) {
+  const [touched, setTouched] = useState<Partial<Record<RequiredField, boolean>>>({})
+
+  function touch(field: RequiredField) {
+    setTouched(t => ({ ...t, [field]: true }))
+  }
+
+  const errors: Partial<Record<RequiredField, string>> = {
+    budget:   touched.budget   && value.budget === null         ? 'Budget is required'   : undefined,
+    location: touched.location && value.location.trim() === ''  ? 'Location is required' : undefined,
+    age:      touched.age      && value.age === null             ? 'Age is required'      : undefined,
+    height:   touched.height   && value.height === null          ? 'Height is required'   : undefined,
+  }
+
   function set<K extends keyof Preferences>(key: K, val: Preferences[K]) {
     onChange({ ...value, [key]: val })
   }
@@ -199,8 +214,10 @@ export function PreferencesStep({ value, onChange }: Props) {
 
       {/* Budget */}
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-foreground">Budget</label>
-        <div className="flex gap-2">
+        <label className="text-sm font-medium text-foreground">
+          Budget <span className="text-[11px] text-red-500 font-normal">Required</span>
+        </label>
+        <div className="flex gap-2" onBlur={() => touch('budget')}>
           {BUDGET_OPTIONS.map(opt => (
             <button
               key={opt.value}
@@ -212,6 +229,7 @@ export function PreferencesStep({ value, onChange }: Props) {
             </button>
           ))}
         </div>
+        {errors.budget && <p className="text-xs text-purple-500">{errors.budget}</p>}
       </div>
 
       {/* Logo tolerance */}
@@ -234,16 +252,19 @@ export function PreferencesStep({ value, onChange }: Props) {
       {/* Location */}
       <div className="flex flex-col gap-2">
         <label htmlFor="pref-location" className="text-sm font-medium text-foreground">
-          Location <span className="text-muted-foreground font-normal">(country)</span>
+          Location <span className="text-muted-foreground font-normal">(country)</span>{' '}
+          <span className="text-[11px] text-red-500 font-normal">Required</span>
         </label>
         <input
           id="pref-location"
           type="text"
           value={value.location}
           onChange={e => set('location', e.target.value)}
+          onBlur={() => touch('location')}
           placeholder="e.g. Mexico, United States…"
           className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
         />
+        {errors.location && <p className="text-xs text-purple-500">{errors.location}</p>}
       </div>
 
       {/* Fit notes */}
@@ -263,11 +284,14 @@ export function PreferencesStep({ value, onChange }: Props) {
 
       {/* Age */}
       <div className="flex flex-col gap-2">
-        <label htmlFor="pref-age" className="text-sm font-medium text-foreground">Age</label>
+        <label htmlFor="pref-age" className="text-sm font-medium text-foreground">
+          Age <span className="text-[11px] text-red-500 font-normal">Required</span>
+        </label>
         <select
           id="pref-age"
           value={value.age ?? ''}
           onChange={e => set('age', e.target.value === '' ? null : Number(e.target.value))}
+          onBlur={() => touch('age')}
           className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
         >
           <option value="">Select age…</option>
@@ -275,22 +299,26 @@ export function PreferencesStep({ value, onChange }: Props) {
             <option key={i} value={i}>{i}</option>
           ))}
         </select>
+        {errors.age && <p className="text-xs text-purple-500">{errors.age}</p>}
       </div>
 
       {/* Height */}
       <div className="flex flex-col gap-2">
         <label htmlFor="pref-height" className="text-sm font-medium text-foreground">
-          Height <span className="text-muted-foreground font-normal">(cm)</span>
+          Height <span className="text-muted-foreground font-normal">(cm)</span>{' '}
+          <span className="text-[11px] text-red-500 font-normal">Required</span>
         </label>
         <input
           id="pref-height"
           type="number"
           value={value.height ?? ''}
           onChange={e => set('height', e.target.value === '' ? null : Number(e.target.value))}
+          onBlur={() => touch('height')}
           placeholder="e.g. 175"
           min={0}
           className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
         />
+        {errors.height && <p className="text-xs text-purple-500">{errors.height}</p>}
       </div>
 
       {/* Hobbies */}
