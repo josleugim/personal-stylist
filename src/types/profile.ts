@@ -3,7 +3,7 @@ import type { Style } from './style'
 import type { BodyType } from './bodyType'
 import type { Wardrobe } from './wardrobe'
 
-export type LogoTolerance = 'none' | 'minimal' | 'moderate' | 'all'
+export type LogoTolerance = 'none' | 'low' | 'medium' | 'high'
 
 export interface Profile {
   id: number
@@ -18,6 +18,10 @@ export interface Profile {
   budget: string | null
   location: string | null
   logo_tolerance: LogoTolerance | null
+  hobbies: string[]
+  sports: string[]
+  age: number
+  height: number
   created_at: string
 }
 
@@ -29,6 +33,10 @@ export interface ProfileCreate {
   budget?: string
   location?: string
   logo_tolerance?: LogoTolerance
+  hobbies: string[]
+  sports: string[]
+  age: number
+  height: number
 }
 
 export interface ProfileUpdate {
@@ -40,4 +48,8 @@ export interface ProfileUpdate {
   logo_tolerance?: LogoTolerance
   style_ids?: number[]
   body_type_ids?: number[]
+  hobbies: string[]
+  sports: string[]
+  age: number
+  height: number
 }

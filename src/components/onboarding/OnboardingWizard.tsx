@@ -2,26 +2,48 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { StyleStep } from './StyleStep'
 import { BodyTypeStep } from './BodyTypeStep'
+import { PreferencesStep } from './PreferencesStep'
+import type { Preferences } from './PreferencesStep'
 
-const STEPS = ['Style', 'Body Type'] as const
-type StepIndex = 0 | 1
+const STEPS = ['Style', 'Body Type', 'Preferences'] as const
+type StepIndex = 0 | 1 | 2
 
 interface Selection {
   styleIds:    number[]
   bodyTypeId:  number | null
+  preferences: Preferences
 }
 
 interface Props {
   onComplete: (selection: Selection) => void
 }
 
+const DEFAULT_PREFERENCES: Preferences = {
+  favoriteColors: [],
+  colorsToAvoid:  [],
+  budget:         null,
+  logoTolerance:  null,
+  location:       '',
+  fitNotes:       '',
+  hobbies:        [],
+  sports:         [],
+}
+
 export function OnboardingWizard({ onComplete }: Props) {
   const [step, setStep]           = useState<StepIndex>(0)
-  const [selection, setSelection] = useState<Selection>({ styleIds: [], bodyTypeId: null })
+  const [selection, setSelection] = useState<Selection>({
+    styleIds:    [],
+    bodyTypeId:  null,
+    preferences: DEFAULT_PREFERENCES,
+  })
 
-  const progress    = ((step + 1) / STEPS.length) * 100
-  const isLastStep  = step === STEPS.length - 1
-  const canContinue = step === 0 ? selection.styleIds.length > 0 : selection.bodyTypeId !== null
+  const progress   = ((step + 1) / STEPS.length) * 100
+  const isLastStep = step === STEPS.length - 1
+
+  const canContinue =
+    step === 0 ? selection.styleIds.length > 0
+    : step === 1 ? selection.bodyTypeId !== null
+    : selection.preferences.budget !== null
 
   function handleNext() {
     if (isLastStep) {
@@ -29,6 +51,12 @@ export function OnboardingWizard({ onComplete }: Props) {
     } else {
       setStep(s => (s + 1) as StepIndex)
     }
+  }
+
+  const headings: Record<StepIndex, { title: string; subtitle: string }> = {
+    0: { title: 'Choose your style',      subtitle: 'Select the aesthetic that best represents you.'      },
+    1: { title: 'Choose your body type',  subtitle: 'Select the silhouette that best fits your body.'     },
+    2: { title: 'Your preferences',       subtitle: 'Help us personalise recommendations for you.'        },
   }
 
   return (
@@ -60,12 +88,10 @@ export function OnboardingWizard({ onComplete }: Props) {
       {/* Step heading */}
       <div className="flex flex-col gap-1">
         <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-          {step === 0 ? 'Choose your style' : 'Choose your body type'}
+          {headings[step].title}
         </h2>
         <p className="text-sm text-muted-foreground">
-          {step === 0
-            ? 'Select the aesthetic that best represents you.'
-            : 'Select the silhouette that best fits your body.'}
+          {headings[step].subtitle}
         </p>
       </div>
 
@@ -80,6 +106,12 @@ export function OnboardingWizard({ onComplete }: Props) {
         <BodyTypeStep
           selected={selection.bodyTypeId}
           onSelect={id => setSelection(s => ({ ...s, bodyTypeId: id }))}
+        />
+      )}
+      {step === 2 && (
+        <PreferencesStep
+          value={selection.preferences}
+          onChange={prefs => setSelection(s => ({ ...s, preferences: prefs }))}
         />
       )}
 
