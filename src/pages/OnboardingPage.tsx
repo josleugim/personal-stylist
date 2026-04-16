@@ -9,7 +9,6 @@ export function OnboardingPage() {
   return (
     <div className="flex flex-1 items-start justify-center px-4 py-16">
       <OnboardingWizard onComplete={ async (data) => {
-        console.log('preferences', data);
         const userId = token.getUserId();
         const profileCreateBody = {
           user_id: userId || null,
@@ -29,7 +28,7 @@ export function OnboardingPage() {
 
         try {
           const response = await profileApi.create(profileCreateBody);
-          console.log('response', response);
+
           if (response) {
             navigate('/');
           }
