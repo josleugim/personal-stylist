@@ -23,7 +23,8 @@ export function OnboardingPage() {
           hobbies: data?.preferences?.hobbies,
           sports: data?.preferences?.sports,
           age: data?.preferences?.age,
-          height: data?.preferences?.height
+          height: data?.preferences?.height,
+          gender: data?.preferences?.gender
         }
 
         try {

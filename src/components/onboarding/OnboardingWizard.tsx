@@ -29,6 +29,7 @@ const DEFAULT_PREFERENCES: Preferences = {
   sports:         [],
   age:            null,
   height:         null,
+  gender: null
 }
 
 export function OnboardingWizard({ onComplete }: Props) {

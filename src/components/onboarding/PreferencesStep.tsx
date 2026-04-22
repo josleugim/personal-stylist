@@ -15,6 +15,7 @@ export interface Preferences {
   sports: string[]
   age:    number | null
   height: number | null
+  gender: string
 }
 
 interface Props {
@@ -161,6 +162,63 @@ function MultiSelectDropdown({
 }
 
 type RequiredField = 'budget' | 'location' | 'age' | 'height'
+
+const GENDER_PRESETS = ['Male', 'Female']
+
+function GenderInput({
+  value: gender,
+  onChange: onGenderChange,
+}: {
+  value:    string
+  onChange: (v: string) => void
+}) {
+  const isOther      = gender !== '' && !GENDER_PRESETS.includes(gender)
+  const [otherText, setOtherText] = useState(isOther ? gender : '')
+  const radioValue   = GENDER_PRESETS.includes(gender) ? gender : (gender !== '' ? 'Other' : '')
+
+  function handleRadio(option: string) {
+    if (option === 'Other') {
+      onGenderChange(otherText)
+    } else {
+      onGenderChange(option)
+    }
+  }
+
+  function handleOtherText(text: string) {
+    setOtherText(text)
+    onGenderChange(text)
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <label className="text-sm font-medium text-foreground">Gender</label>
+      <div className="flex flex-wrap gap-4">
+        {[...GENDER_PRESETS, 'Other'].map(option => (
+          <label key={option} className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
+            <input
+              type="radio"
+              name="gender"
+              value={option}
+              checked={radioValue === option}
+              onChange={() => handleRadio(option)}
+              className="accent-foreground"
+            />
+            {option}
+          </label>
+        ))}
+      </div>
+      {radioValue === 'Other' && (
+        <input
+          type="text"
+          value={otherText}
+          onChange={e => handleOtherText(e.target.value)}
+          placeholder="Please specify…"
+          className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+        />
+      )}
+    </div>
+  )
+}
 
 export function PreferencesStep({ value, onChange }: Props) {
   const [touched, setTouched] = useState<Partial<Record<RequiredField, boolean>>>({})
@@ -320,6 +378,12 @@ export function PreferencesStep({ value, onChange }: Props) {
         />
         {errors.height && <p className="text-xs text-purple-500">{errors.height}</p>}
       </div>
+
+      {/* Gender */}
+      <GenderInput
+        value={value.gender}
+        onChange={v => set('gender', v)}
+      />
 
       {/* Hobbies */}
       <MultiSelectDropdown

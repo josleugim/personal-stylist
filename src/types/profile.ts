@@ -22,6 +22,7 @@ export interface Profile {
   sports: string[]
   age: number
   height: number
+  gender: string
   created_at: string
 }
 
@@ -39,6 +40,7 @@ export interface ProfileCreate {
   sports: string[]
   age: number
   height: number
+  gender: string
 }
 
 export interface ProfileUpdate {
@@ -54,4 +56,5 @@ export interface ProfileUpdate {
   sports: string[]
   age: number
   height: number
+  gender: string
 }
