@@ -45,12 +45,20 @@ export function Navbar() {
               Logout
             </button>
           ) : (
-            <Link
-              to="/login"
-              className="text-sm font-medium px-4 py-1.5 rounded-md border border-border hover:bg-accent hover:text-accent-foreground transition-colors"
-            >
-              Sign In
-            </Link>
+            <>
+              <Link
+                to="/signup"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Sign Up
+              </Link>
+              <Link
+                to="/login"
+                className="text-sm font-medium px-4 py-1.5 rounded-md border border-border hover:bg-accent hover:text-accent-foreground transition-colors"
+              >
+                Sign In
+              </Link>
+            </>
           )}
         </nav>
       </div>
