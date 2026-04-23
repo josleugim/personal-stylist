@@ -7,7 +7,7 @@ import type { LoginRequest } from '../types/auth'
 interface AuthState {
   user:        User | null
   isLoading:   boolean
-  login:       (credentials: LoginRequest) => Promise<void>
+  login:       (credentials: LoginRequest) => Promise<User>
   logout:      () => Promise<void>
 }
 
@@ -25,11 +25,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .finally(() => setLoading(false))
   }, [])
 
-  async function login(credentials: LoginRequest) {
+  async function login(credentials: LoginRequest): Promise<User> {
     const { access_token, refresh_token, user_id } = await authApi.login(credentials)
     token.save(access_token, refresh_token, user_id)
     const me = await authApi.me()
     setUser(me)
+    return me
   }
 
   async function logout() {

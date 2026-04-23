@@ -25,12 +25,14 @@ export function Navbar() {
 
         {/* Right nav */}
         <nav className="flex-1 flex items-center justify-end gap-6">
-        <Link
-            to="/onboarding"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Onboarding
-          </Link>
+          {user && !user.profile && (
+            <Link
+              to="/onboarding"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Onboarding
+            </Link>
+          )}
           <Link
             to="/help"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"

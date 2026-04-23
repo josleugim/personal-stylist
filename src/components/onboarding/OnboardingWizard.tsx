@@ -2,15 +2,17 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { StyleStep } from './StyleStep'
 import { BodyTypeStep } from './BodyTypeStep'
+import { BrandStep } from './BrandStep'
 import { PreferencesStep } from './PreferencesStep'
 import type { Preferences } from './PreferencesStep'
 
-const STEPS = ['Style', 'Body Type', 'Preferences'] as const
-type StepIndex = 0 | 1 | 2
+const STEPS = ['Style', 'Body Type', 'Brands', 'Preferences'] as const
+type StepIndex = 0 | 1 | 2 | 3
 
 interface Selection {
   styleIds:    number[]
   bodyTypeId:  number | null
+  brandIds:    string[]
   preferences: Preferences
 }
 
@@ -37,6 +39,7 @@ export function OnboardingWizard({ onComplete }: Props) {
   const [selection, setSelection] = useState<Selection>({
     styleIds:    [],
     bodyTypeId:  null,
+    brandIds:    [],
     preferences: DEFAULT_PREFERENCES,
   })
 
@@ -47,6 +50,7 @@ export function OnboardingWizard({ onComplete }: Props) {
   const canContinue =
     step === 0 ? selection.styleIds.length > 0
     : step === 1 ? selection.bodyTypeId !== null
+    : step === 2 ? selection.brandIds.length > 0
     : budget !== null && location.trim() !== '' && age !== null && height !== null
 
   function handleNext() {
@@ -60,7 +64,8 @@ export function OnboardingWizard({ onComplete }: Props) {
   const headings: Record<StepIndex, { title: string; subtitle: string }> = {
     0: { title: 'Choose your style',      subtitle: 'Select the aesthetic that best represents you.'      },
     1: { title: 'Choose your body type',  subtitle: 'Select the silhouette that best fits your body.'     },
-    2: { title: 'Your preferences',       subtitle: 'Help us personalise recommendations for you.'        },
+    2: { title: 'Pick your favorite brands', subtitle: 'Select the brands you love or aspire to wear.'   },
+    3: { title: 'Your preferences',       subtitle: 'Help us personalise recommendations for you.'        },
   }
 
   return (
@@ -113,6 +118,12 @@ export function OnboardingWizard({ onComplete }: Props) {
         />
       )}
       {step === 2 && (
+        <BrandStep
+          selected={selection.brandIds}
+          onSelect={ids => setSelection(s => ({ ...s, brandIds: ids }))}
+        />
+      )}
+      {step === 3 && (
         <PreferencesStep
           value={selection.preferences}
           onChange={prefs => setSelection(s => ({ ...s, preferences: prefs }))}

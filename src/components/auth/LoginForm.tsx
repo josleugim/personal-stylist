@@ -1,9 +1,10 @@
 import { useState, type FormEvent } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { Button } from '@/components/ui/button'
+import type { User } from '@/types/user'
 
 interface Props {
-  onSuccess?: () => void
+  onSuccess?: (user: User) => void
 }
 
 export function LoginForm({ onSuccess }: Props) {
@@ -18,8 +19,8 @@ export function LoginForm({ onSuccess }: Props) {
     setError(null)
     setLoading(true)
     try {
-      await login({ email, password })
-      onSuccess?.()
+      const user = await login({ email, password })
+      onSuccess?.(user)
     } catch (err) {
       setError('Login failed')
     } finally {

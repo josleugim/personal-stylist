@@ -5,6 +5,7 @@ export interface User {
   email: string
   is_active: boolean
   created_at: string
+  profile: { id: number } | null
 }
 
 export interface UserCreate {

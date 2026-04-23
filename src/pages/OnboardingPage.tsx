@@ -14,6 +14,7 @@ export function OnboardingPage() {
           user_id: userId || null,
           style_ids: data?.styleIds || [],
           body_type_ids: [data?.bodyTypeId],
+          favorite_brand_ids: data?.brandIds || [],
           favorite_colors: data?.preferences?.favoriteColors,
           colors_to_avoid: data?.preferences?.colorsToAvoid,
           logo_tolerance: data?.preferences?.logoTolerance,

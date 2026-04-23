@@ -3,6 +3,7 @@ import { LoginPage } from './pages/LoginPage'
 import { SignupPage } from './pages/SignupPage'
 import { OnboardingPage } from './pages/OnboardingPage'
 import { ProtectedRoute } from './components/ProtectedRoute'
+import { OnboardingRoute } from './components/OnboardingRoute'
 import { Navbar } from './components/navbar/Navbar'
 import './App.css'
 
@@ -19,7 +20,10 @@ function App() {
 
         {/* Protected — must be logged in */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/onboarding" element={<OnboardingPage />} />
+          {/* Onboarding — only accessible when profile is not yet created */}
+          <Route element={<OnboardingRoute />}>
+            <Route path="/onboarding" element={<OnboardingPage />} />
+          </Route>
         </Route>
       </Routes>
     </>
