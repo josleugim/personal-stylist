@@ -21,6 +21,7 @@ export function OnboardingPage() {
           fit_notes: data?.preferences?.fitNotes || '',
           budget: data?.preferences?.budget,
           location: data?.preferences?.location,
+          skin_tone_id: data?.skinToneId,
           hobbies: data?.preferences?.hobbies,
           sports: data?.preferences?.sports,
           age: data?.preferences?.age,

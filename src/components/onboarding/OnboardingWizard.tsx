@@ -3,16 +3,18 @@ import { Button } from '@/components/ui/button'
 import { StyleStep } from './StyleStep'
 import { BodyTypeStep } from './BodyTypeStep'
 import { BrandStep } from './BrandStep'
+import { SkinToneStep } from './SkinToneStep'
 import { PreferencesStep } from './PreferencesStep'
 import type { Preferences } from './PreferencesStep'
 
-const STEPS = ['Style', 'Body Type', 'Brands', 'Preferences'] as const
-type StepIndex = 0 | 1 | 2 | 3
+const STEPS = ['Style', 'Body Type', 'Brands', 'Skin Tone', 'Preferences'] as const
+type StepIndex = 0 | 1 | 2 | 3 | 4
 
 interface Selection {
   styleIds:    number[]
   bodyTypeId:  number | null
   brandIds:    string[]
+  skinToneId:  number | null
   preferences: Preferences
 }
 
@@ -40,6 +42,7 @@ export function OnboardingWizard({ onComplete }: Props) {
     styleIds:    [],
     bodyTypeId:  null,
     brandIds:    [],
+    skinToneId:  null,
     preferences: DEFAULT_PREFERENCES,
   })
 
@@ -51,6 +54,7 @@ export function OnboardingWizard({ onComplete }: Props) {
     step === 0 ? selection.styleIds.length > 0
     : step === 1 ? selection.bodyTypeId !== null
     : step === 2 ? selection.brandIds.length > 0
+    : step === 3 ? selection.skinToneId !== null
     : budget !== null && location.trim() !== '' && age !== null && height !== null
 
   function handleNext() {
@@ -62,10 +66,11 @@ export function OnboardingWizard({ onComplete }: Props) {
   }
 
   const headings: Record<StepIndex, { title: string; subtitle: string }> = {
-    0: { title: 'Choose your style',      subtitle: 'Select the aesthetic that best represents you.'      },
-    1: { title: 'Choose your body type',  subtitle: 'Select the silhouette that best fits your body.'     },
-    2: { title: 'Pick your favorite brands', subtitle: 'Select the brands you love or aspire to wear.'   },
-    3: { title: 'Your preferences',       subtitle: 'Help us personalise recommendations for you.'        },
+    0: { title: 'Choose your style',         subtitle: 'Select the aesthetic that best represents you.'      },
+    1: { title: 'Choose your body type',     subtitle: 'Select the silhouette that best fits your body.'     },
+    2: { title: 'Pick your favorite brands', subtitle: 'Select the brands you love or aspire to wear.'       },
+    3: { title: 'Choose your skin tone',     subtitle: 'Select the tone that best matches your complexion.'  },
+    4: { title: 'Your preferences',          subtitle: 'Help us personalise recommendations for you.'        },
   }
 
   return (
@@ -124,6 +129,12 @@ export function OnboardingWizard({ onComplete }: Props) {
         />
       )}
       {step === 3 && (
+        <SkinToneStep
+          selected={selection.skinToneId}
+          onSelect={id => setSelection(s => ({ ...s, skinToneId: id }))}
+        />
+      )}
+      {step === 4 && (
         <PreferencesStep
           value={selection.preferences}
           onChange={prefs => setSelection(s => ({ ...s, preferences: prefs }))}
