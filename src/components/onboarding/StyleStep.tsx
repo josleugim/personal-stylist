@@ -47,9 +47,9 @@ export function StyleStep({ selected, onSelect }: Props) {
             </span>
           </div>
           <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{style.description}</p>
-          {style.tags.length > 0 && (
+          {style.tags?.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-2">
-              {style.tags.map(tag => (
+              {style.tags?.map(tag => (
                 <span key={tag} className="text-xs text-muted-foreground bg-background border border-border rounded-full px-2 py-0.5">
                   {tag}
                 </span>
