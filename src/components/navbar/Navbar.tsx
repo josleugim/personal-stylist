@@ -33,6 +33,14 @@ export function Navbar() {
               Onboarding
             </Link>
           )}
+          {user && (
+            <Link
+              to="/wardrobe"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Wardrobe
+            </Link>
+          )}
           <Link
             to="/help"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
