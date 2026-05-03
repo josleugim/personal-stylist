@@ -9,6 +9,7 @@ export const authApi = {
   logout: ()                          => api.post<void>('/auth/logout', {}),
   me:     ()                          => {
     const id = token.getUserId()
+    if (!id) return Promise.reject(new Error('No user ID in storage'))
     return api.get<User>(`/users/${id}`)
   },
 }
