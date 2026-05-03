@@ -7,6 +7,7 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 import { OnboardingRoute } from './components/OnboardingRoute'
 import { Navbar } from './components/navbar/Navbar'
 import './App.css'
+import { OutfitSuggestionPage } from './pages/OutfitSuggestion'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         {/* Protected — must be logged in */}
         <Route element={<ProtectedRoute />}>
           <Route path="/wardrobe" element={<WardrobePage />} />
+          <Route path="/outfit-suggestions" element={<OutfitSuggestionPage />} />
 
           {/* Onboarding — only accessible when profile is not yet created */}
           <Route element={<OnboardingRoute />}>

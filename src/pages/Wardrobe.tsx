@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { Trash2 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { wardrobesApi } from '../api/wardrobes'
@@ -64,7 +65,15 @@ export function WardrobePage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-semibold mb-6">My Wardrobe</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-semibold">My Wardrobe</h1>
+        <Link
+          to="/outfit-suggestions"
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          Outfit suggestions
+        </Link>
+      </div>
 
       {items.length === 0 ? (
         <p className="text-center text-gray-500 py-16">Your wardrobe is empty.</p>
